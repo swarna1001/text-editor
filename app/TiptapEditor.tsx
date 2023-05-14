@@ -12,10 +12,20 @@ import html from "highlight.js/lib/languages/xml";
 import Toolbar from "./Toolbar";
 import CodeBlockComponent from "./CodeBlock";
 
+// for Collaborative editing
+import Collaboration from "@tiptap/extension-collaboration";
+import { HocuspocusProvider } from "@hocuspocus/provider";
+
 lowlight.registerLanguage("html", html);
 lowlight.registerLanguage("css", css);
 lowlight.registerLanguage("js", js);
 lowlight.registerLanguage("ts", ts);
+
+// Set up the Hocuspocus WebSocket provider
+const provider = new HocuspocusProvider({
+  url: "ws://127.0.0.1:1234",
+  name: "example-document",
+});
 
 const TiptapEditor = () => {
   const editor = useEditor({
@@ -29,6 +39,10 @@ const TiptapEditor = () => {
           keepMarks: true,
           keepAttributes: false,
         },
+        history: false,
+      }),
+      Collaboration.configure({
+        document: provider.document,
       }),
       CodeBlockLowlight.extend({
         addNodeView() {
