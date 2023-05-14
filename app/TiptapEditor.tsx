@@ -15,6 +15,7 @@ import CodeBlockComponent from "./CodeBlock";
 // for Collaborative editing
 import Collaboration from "@tiptap/extension-collaboration";
 import { HocuspocusProvider } from "@hocuspocus/provider";
+import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 
 lowlight.registerLanguage("html", html);
 lowlight.registerLanguage("css", css);
@@ -43,6 +44,14 @@ const TiptapEditor = () => {
       }),
       Collaboration.configure({
         document: provider.document,
+      }),
+      // Register the collaboration cursor extension
+      CollaborationCursor.configure({
+        provider: provider,
+        user: {
+          name: "Tom Riddle",
+          color: "#0b3914",
+        },
       }),
       CodeBlockLowlight.extend({
         addNodeView() {
